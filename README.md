@@ -9,33 +9,21 @@ Route::Switcher - It's new $module
     use Route::Switcher;
 
     # redefine get,post method
-    Route::Switcher->methods(qw/get post/);
+    Route::Switcher->init(qw/get post/);
 
-    switcher {
-        base '/user_account' => 'Hoge::UserAccount';
-
+    switcher '/user_account' => 'Hoge::UserAccount', sub {
         get('/new'  => '#new');
         post('/new'  => '#new');
         get('/edit' => '#edit');
     };
 
-    switcher {
-        base '/post/' => 'Hoge::Post';
-
+    switcher '/post/' => 'Hoge::Post', sub {
         get('new'  => '#new');
         post('new'  => '#new');
         get('edit' => '#edit');
     };
 
-    switcher {
-
-        base '/a/' => 'Hoge::A';
-        get('new'  => '#new');
-
-        base '/b/' => 'Hoge::B';
-        get('new'  => '#new');
-
-        base '' => '';
+    switcher '' => '', sub {
         get('new'  => 'NoBase#new');
     };
 

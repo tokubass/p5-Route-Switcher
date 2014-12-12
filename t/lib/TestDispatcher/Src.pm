@@ -2,38 +2,25 @@ package TestDispatcher::Src;
 use Amon2::Web::Dispatcher::RouterBoom;
 use Route::Switcher;
 
-Route::Switcher->methods(qw/get post any delete_/);
+Route::Switcher->init(qw/get post any delete_/);
 
 
-switcher {
-    base '/user_account' => 'Hoge::UserAccount';
-
+switcher '/user_account' => 'Hoge::UserAccount', sub {
     get('/new'  => '#new');
     post('/new'  => '#new');
     get('/edit' => '#edit');
     any('/edit' => '#edit');
 };
 
-switcher {
-    base '/post/' => 'Hoge::Post';
-
+switcher '/post/' => 'Hoge::Post', sub {
     get('new'  => '#new');
     post('new'  => '#new');
     get('edit' => '#edit');
     delete_('delete' => '#delete');
 };
 
-switcher {
-
-    base '/a/' => 'Hoge::A';
-    get('new'  => '#new');
-
-    base '/b/' => 'Hoge::B';
-    get('new'  => '#new');
-
-    base '' => '';
+switcher  '' => '', sub {
     get('new'  => 'NoBase#new');
-
 };
 
 

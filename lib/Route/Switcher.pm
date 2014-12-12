@@ -10,19 +10,15 @@ our @EXPORT = qw/switcher/;
 my $CALLER = caller;
 my @methods;
 my %ORIG_METHOD;
-
 our ($base_path,$base_class);
 
-sub switcher(&)  {
-    my $code = shift;
-    local $base_path;
-    local $base_class;
+sub init {
+    my $class = shift;
+    my @methods  = @_;
+    $class->methods(@_);
 
     no strict 'refs';
     no warnings 'redefine';
-    local *{"$CALLER\::base"} = sub {
-        ($base_path,$base_class) = @_;
-    };
     for my $method (@methods) {
         *{"$CALLER\::$method"} = sub  {
             my $path = ($base_path  || '') . $_[0];
@@ -30,7 +26,12 @@ sub switcher(&)  {
             $ORIG_METHOD{$method}->($path,$dest);
         };
     }
+}
 
+sub switcher {
+    local $base_path = shift;
+    local $base_class = shift;
+    my $code = shift;
     $code->();
 }
 
@@ -42,6 +43,7 @@ sub methods {
     }
     return @methods;
 }
+
 
 sub _cache_original_method {
     for my $method (@methods) {
@@ -67,33 +69,21 @@ Route::Switcher - It's new $module
     use Route::Switcher;
 
     # redefine get,post method
-    Route::Switcher->methods(qw/get post/);
+    Route::Switcher->init(qw/get post/);
 
-    switcher {
-        base '/user_account' => 'Hoge::UserAccount';
-
+    switcher '/user_account' => 'Hoge::UserAccount', sub {
         get('/new'  => '#new');
         post('/new'  => '#new');
         get('/edit' => '#edit');
     };
 
-    switcher {
-        base '/post/' => 'Hoge::Post';
-
+    switcher '/post/' => 'Hoge::Post', sub {
         get('new'  => '#new');
         post('new'  => '#new');
         get('edit' => '#edit');
     };
 
-    switcher {
-
-        base '/a/' => 'Hoge::A';
-        get('new'  => '#new');
-
-        base '/b/' => 'Hoge::B';
-        get('new'  => '#new');
-
-        base '' => '';
+    switcher '' => '', sub {
         get('new'  => 'NoBase#new');
     };
 

@@ -14,10 +14,6 @@ post('/post/new'  => 'Hoge::Post#new');
 get('/post/edit'  => 'Hoge::Post#edit');
 delete_('/post/delete'  => 'Hoge::Post#delete');
 
-# base '/a/' => 'Hoge::A';
-get('/a/new'  => 'Hoge::A#new');
-#  base '/b/' => 'Hoge::B';
-get('/b/new'  => 'Hoge::B#new');
 #  base '' => '';
 get('new'  => 'NoBase#new');
 

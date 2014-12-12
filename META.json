@@ -54,6 +54,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/tokubass/p5-Route-Switcher/issues"
+      },
+      "homepage" : "https://github.com/tokubass/p5-Route-Switcher",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/tokubass/p5-Route-Switcher.git",
+         "web" : "https://github.com/tokubass/p5-Route-Switcher"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:TOKUBASS"
 }
