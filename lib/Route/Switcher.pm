@@ -60,19 +60,19 @@ __END__
 
 =head1 NAME
 
-Route::Switcher - It's new $module
+Route::Switcher - give feature of nest to other router module
 
 =head1 SYNOPSIS
 
     package TestDispatcher;
-    use Hoge::Dispatcher; #export get,post method
+    use Your::Router qw/ get post /; #export get,post method
     use Route::Switcher;
 
-    # redefine get,post method
+    # override get,post method in switcher method
     Route::Switcher->init(qw/get post/);
 
     switcher '/user_account' => 'Hoge::UserAccount', sub {
-        get('/new'  => '#new');
+        get('/new'  => '#new'); # equal to get('/user_account/new' => 'Hoge::UserAccount#new');
         post('/new'  => '#new');
         get('/edit' => '#edit');
     };
@@ -87,13 +87,24 @@ Route::Switcher - It's new $module
         get('new'  => 'NoBase#new');
     };
 
+    # original methods of Your::Router
     get('/no_base'  => 'NoBase#new');
     post('/no_base'  => 'NoBase#new');
 
 
 =head1 DESCRIPTION
 
-Route::Switcher is ...
+Route::Switcher give feature of nest to other router module.
+
+=head1 METHODS
+
+=head2 init
+
+set name of overridden method.
+
+=head2 switcher
+
+argument of switcher and argument of overriden method are joined within the dynamic scope of switcher method.
 
 =head1 LICENSE
 

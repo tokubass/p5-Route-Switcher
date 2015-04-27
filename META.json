@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "give feature of nest to other router module",
    "author" : [
       "tokubass <tokubass@cpan.org>"
    ],
