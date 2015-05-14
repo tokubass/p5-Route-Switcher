@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 use base 'Exporter';
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 our @EXPORT = qw/switcher/;
 
@@ -21,9 +21,9 @@ sub init {
     no warnings 'redefine';
     for my $method (@methods) {
         *{"$CALLER\::$method"} = sub  {
-            my $path = ($base_path  || '') . $_[0];
-            my $dest = ($base_class || '') . $_[1];
-            $ORIG_METHOD{$method}->($path,$dest);
+            my $path = ($base_path  || '') . shift;
+            my $dest = ($base_class || '') . shift;
+            $ORIG_METHOD{$method}->($path,$dest,@_);
         };
     }
 }
